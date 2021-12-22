@@ -1,0 +1,5 @@
+https://www.tenouk.com/Winsock/Winsock2example2.html
+https://www.binarytides.com/winsock-socket-programming-tutorial/
+https://bitbucket.org/sloankelly/youtube-source-repository/src/master/cpp/networking/
+https://www.techiedelight.com/validate-ip-address/
+https://www.dreamincode.net/forums/topic/125754-solved-winsock-connect-with-timeout/
