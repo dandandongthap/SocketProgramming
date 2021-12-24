@@ -65,3 +65,35 @@ string inputIP()
 		if (validateIP(ip)) return ip;
 	} 
 }
+
+void signUp(string &name,string &pass)
+{
+	bool flag = 0;
+	while (flag == 0)
+	{
+		string tmp;
+		flag = 1;
+		cout << "Username must contain at least 6 characters (cannot contains blank space): ";
+		getline(cin, name);
+		tmp = name;
+		if (tmp.length() < 6)
+			flag = 0;
+		for (int i = 0; i < name.length(); ++i)
+			if (tmp[i] == ' ')
+				flag = 0;
+		if (flag == 1)
+		{
+			while (1)
+			{
+				cout << "Password must contain at least 6 characters: ";
+				getline(cin, pass);
+				if (pass.length() >= 6)
+					break;
+				else
+					cout << "Invalid password!" << endl;
+			}
+		}
+		else
+			cout << "Invalid username!" << endl;
+	}
+}

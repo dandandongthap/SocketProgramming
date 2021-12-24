@@ -15,3 +15,5 @@ vector<string> split(const string& str, char delim);
 bool validateIP(string ip);
 
 string inputIP();
+
+void signUp(string& name, string& pass);

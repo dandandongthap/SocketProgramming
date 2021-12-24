@@ -11,4 +11,16 @@
 
 using namespace std;
 
+struct User
+{
+	string name;
+	string pass;
+};
+
 DWORD WINAPI function_cal(LPVOID arg);
+
+bool isEmpty(ifstream& pFile);
+
+bool checkInfo(User& user, bool signUp);
+
+void saveInfo(User user);

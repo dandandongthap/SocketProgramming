@@ -47,9 +47,11 @@ int main()
 
 		if (clientSocket)
 		{
-			cout << "Client connected\n";
 			SOCKET* hConnected = new SOCKET(clientSocket);
 			threadStatus = CreateThread(NULL, 0, function_cal, hConnected, 0, &threadID);
+
+			cout << "Client connected\n";
+
 		}
 
 	} while (true);

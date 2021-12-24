@@ -101,31 +101,53 @@ int main()
 	// Do-while loop to send and receive data
 	char buf[4096];
 	string userInput;
+	string choice;
 
-	do
+	system("cls");
+
+	cout << "Connected to server\n";
+	while (true)
 	{
-		// Prompt the user for some text
+		cout << "1. Login\n";
+		cout << "2. Sign up\n";
+		cout << "3. Search gold price\n";
+		cout << "0. Quit\n";
+
 		cout << "> ";
-		getline(cin, userInput);
+		getline(cin, choice);
+		send(sock, choice.c_str(), choice.size() + 1, 0);
 
-		if (userInput.size() > 0)		// Make sure the user has typed in something
+		if (choice == "1")
 		{
-			// Send the text
-			int sendResult = send(sock, userInput.c_str(), userInput.size() + 1, 0);
-			if (sendResult != SOCKET_ERROR)
-			{
-				// Wait for response
-				ZeroMemory(buf, 4096);
-				int bytesReceived = recv(sock, buf, 4096, 0);
-				if (bytesReceived > 0)
-				{
-					// Echo response to console
-					cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-				}
-			}
+			cout << "Username: ";
+			getline(cin, userInput);
+			send(sock, userInput.c_str(), userInput.size() + 1, 0);
+			cout << "Password: ";
+			getline(cin, userInput);
+			send(sock, userInput.c_str(), userInput.size() + 1, 0);
+			recv(sock, buf, 4096, 0);
+			if (string(buf) == "1")
+				cout << "Login successful\n";
+			else
+				cout << "Username or password is incorrect!\n";
 		}
-
-	} while (userInput.size() > 0);
+		else if (choice == "2")
+		{
+			string name;
+			string pass;
+			signUp(name, pass);
+			send(sock, name.c_str(), name.size() + 1, 0);
+			send(sock, pass.c_str(), pass.size() + 1, 0);
+			recv(sock, buf, 4096, 0);
+			if (string(buf) == "1")
+				cout << "Sign up successfully\n";
+			else
+				cout << "Username already exists!\n";
+		}
+		else break;
+		Sleep(3000);
+		system("cls");
+	}
 
 	// Gracefully close down everything
 	closesocket(sock);
