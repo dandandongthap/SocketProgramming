@@ -21,8 +21,11 @@ DWORD __stdcall function_cal(LPVOID arg)
 			user.name = buf;
 			recv(*clientSocket, buf, 4096, 0);
 			user.pass = buf;
-			if (checkInfo(user, 0))
+			if (checkLogIn(user))
+			{
+				cout << "Login succesful\n";
 				send(*clientSocket, "1", 2, 0);
+			}
 			else
 				send(*clientSocket, "0", 2, 0);
 
@@ -34,7 +37,7 @@ DWORD __stdcall function_cal(LPVOID arg)
 			user.name = buf;
 			recv(*clientSocket, buf, 4096, 0);
 			user.pass = buf;
-			if (!checkInfo(user, 1))
+			if (checkSignUp(user))
 			{
 				saveInfo(user);
 				cout << "Sign up successfully\n";
@@ -57,7 +60,26 @@ bool isEmpty(ifstream& pFile)
 	return pFile.peek() == std::ifstream::traits_type::eof();
 }
 
-bool checkInfo(User& user, bool signUp)
+bool checkSignUp(User& user)
+{
+	ifstream file;
+	file.open("UserInfo.txt");
+	if (isEmpty(file)) return 1;
+	User tmp;
+
+	while (!file.eof())
+	{
+		getline(file, tmp.name, ' ');
+		getline(file, tmp.pass, '\n');
+		
+		if (user.name == tmp.name)
+			return 0;
+	}
+	file.close();
+	return 1;
+}
+
+bool checkLogIn(User& user)
 {
 	ifstream file;
 	file.open("UserInfo.txt");
@@ -68,11 +90,9 @@ bool checkInfo(User& user, bool signUp)
 	{
 		getline(file, tmp.name, ' ');
 		getline(file, tmp.pass, '\n');
-		if (signUp)
-			if(user.name == tmp.name)
-				return 1;
-		else if (user.name == tmp.name && user.pass == tmp.pass)
-				return 1;
+
+		if (user.name == tmp.name && user.pass == tmp.pass)
+			return 1;
 	}
 	file.close();
 	return 0;
@@ -85,3 +105,55 @@ void saveInfo(User user)
 	file << user.name << " " << user.pass << "\n";
 	file.close();
 }
+/*
+
+string request(string url)
+{
+	http::Request req{ url };
+	http::Response res = req.send("GET");
+	string result = std::string{ res.body.begin(), res.body.end() };
+	return result;
+}
+
+void get_gold_price()
+{
+	string data_str = request("http://tygia.com/json.php");
+	stringstream stream;
+	stream << data_str;
+	json data;
+	stream >> data;
+	ofstream out("gold.json");
+	out << data["golds"][0]["value"];
+}
+
+vector<string> get_gold_types()
+{
+	vector<string> res;
+	ifstream in("gold.json");
+	json data;
+	in >> data;
+	for (auto gold_value : data)
+	{
+		if (find(res.begin(), res.end(), gold_value["type"]) == res.end())
+		{
+			res.push_back(gold_value["type"]);
+		}
+	}
+	return res;
+}
+
+string get_price(string gold_type, string output_type)
+{
+	ifstream in("gold.json");
+	json data;
+	in >> data;
+	for (auto gold_value : data)
+	{
+		if (gold_value["type"] == gold_type)
+		{
+			return gold_value[output_type];
+		}
+	}
+	return "";
+}
+*/

@@ -110,7 +110,6 @@ int main()
 	{
 		cout << "1. Login\n";
 		cout << "2. Sign up\n";
-		cout << "3. Search gold price\n";
 		cout << "0. Quit\n";
 
 		cout << "> ";
@@ -126,8 +125,20 @@ int main()
 			getline(cin, userInput);
 			send(sock, userInput.c_str(), userInput.size() + 1, 0);
 			recv(sock, buf, 4096, 0);
-			if (string(buf) == "1")
+			if (string(buf) == "1") 
+			{
 				cout << "Login successful\n";
+				Sleep(3000);
+				system("cls");
+
+				cout << "Search gold price:\n";
+				cout << "1. By day\n";
+				cout << "2. By types of gold\n";
+				cout << "0. Quit\n";
+
+				cout << "> ";
+				getline(cin, choice);
+			}
 			else
 				cout << "Username or password is incorrect!\n";
 		}
@@ -148,6 +159,7 @@ int main()
 		Sleep(3000);
 		system("cls");
 	}
+
 
 	// Gracefully close down everything
 	closesocket(sock);

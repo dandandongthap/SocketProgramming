@@ -5,7 +5,7 @@ int main()
 	// Initialze winsock
 	WSADATA wsData;
 	WORD ver = MAKEWORD(2, 2);
-	char key;
+	char key = ' ';
 	DWORD threadID;
 	HANDLE threadStatus;
 
