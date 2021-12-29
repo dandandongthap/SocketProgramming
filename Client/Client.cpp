@@ -102,6 +102,10 @@ int main()
 	char buf[4096];
 	string userInput;
 	string choice;
+	string choice1;
+	string choice2;
+	string goldType;
+	string price;
 
 	system("cls");
 
@@ -125,19 +129,65 @@ int main()
 			getline(cin, userInput);
 			send(sock, userInput.c_str(), userInput.size() + 1, 0);
 			recv(sock, buf, 4096, 0);
-			if (string(buf) == "1") 
+			if (string(buf) == "1")
 			{
 				cout << "Login successful\n";
-				Sleep(3000);
-				system("cls");
+				while (true)
+				{
+					Sleep(3000);
+					system("cls");
 
-				cout << "Search gold price:\n";
-				cout << "1. By day\n";
-				cout << "2. By types of gold\n";
-				cout << "0. Quit\n";
+					cout << "Search gold price:\n";
+					cout << "1. By day\n";
+					cout << "2. By types of gold\n";
+					cout << "0. Quit\n";
 
-				cout << "> ";
-				getline(cin, choice);
+					cout << "> ";
+					getline(cin, choice1);
+					send(sock, choice1.c_str(), choice1.size() + 1, 0);
+
+					if (choice1 == "1")
+					{
+						cout << "Comming soon!\n";
+					}
+					else if (choice1 == "2")
+					{
+						while (true)
+						{
+							Sleep(3000);
+							system("cls");
+							cout << "Enter type of gold:\n";
+							cout << "1. Vang nu trang 9999\n";
+							cout << "2. Vang nu trang 18k\n";
+							cout << "3. Vang Mi Hong SJC\n";
+							cout << "0. Quit\n";
+
+							cout << "> ";
+							getline(cin, choice2);
+							send(sock, choice2.c_str(), choice2.size() + 1, 0);
+
+							if (choice2 == "1")
+							{
+								goldType = "nu trang 99.99";
+							}
+							else if (choice2 == "2")
+							{
+								goldType = "nu trang 18k";
+							}
+							else if (choice2 == "3")
+							{
+								goldType = "sjc";
+							}
+							else break;
+
+							send(sock, goldType.c_str(), goldType.size() + 1, 0);
+							recv(sock, buf, 4096, 0);
+							string price = string(buf);
+							cout << "Price: " << price;
+						}
+					}
+					else break;
+				}
 			}
 			else
 				cout << "Username or password is incorrect!\n";

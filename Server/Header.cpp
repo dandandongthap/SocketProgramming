@@ -7,6 +7,7 @@ DWORD __stdcall function_cal(LPVOID arg)
 	// While loop: accept and echo message back to client
 	char buf[4096];
 	string choice;
+	string choice1;
 
 	while (true)
 	{
@@ -25,6 +26,35 @@ DWORD __stdcall function_cal(LPVOID arg)
 			{
 				cout << "Login succesful\n";
 				send(*clientSocket, "1", 2, 0);
+
+				while (true)
+				{
+					recv(*clientSocket, buf, 4096, 0);
+					choice1 = string(buf);
+
+					if (choice1 == "1")
+					{
+						cout << "Comming soon!\n";
+					}
+					else if (choice1 == "2")
+					{
+
+
+						while (true)
+						{
+							recv(*clientSocket, buf, 4096, 0);
+							string choice2 = string(buf);
+
+							if (choice2 != "1" && choice2 != "2" && choice2 != "3") break;
+
+							recv(*clientSocket, buf, 4096, 0);
+							string goldType = string(buf);
+							string price = get_price(goldType);
+							send(*clientSocket, price.c_str(), price.size() + 1, 0);
+						}
+					}
+					else break;
+				}
 			}
 			else
 				send(*clientSocket, "0", 2, 0);
@@ -71,7 +101,7 @@ bool checkSignUp(User& user)
 	{
 		getline(file, tmp.name, ' ');
 		getline(file, tmp.pass, '\n');
-		
+
 		if (user.name == tmp.name)
 			return 0;
 	}
@@ -105,7 +135,7 @@ void saveInfo(User user)
 	file << user.name << " " << user.pass << "\n";
 	file.close();
 }
-/*
+
 
 string request(string url)
 {
@@ -117,7 +147,7 @@ string request(string url)
 
 void get_gold_price()
 {
-	string data_str = request("http://tygia.com/json.php");
+	string data_str = request("http://103.9.159.138:22050/json.php");
 	stringstream stream;
 	stream << data_str;
 	json data;
@@ -156,4 +186,12 @@ string get_price(string gold_type, string output_type)
 	}
 	return "";
 }
-*/
+
+void update30Min()
+{
+	while (1)
+	{
+		get_gold_price();
+		Sleep(30 * 60 * 1000);
+	}
+}

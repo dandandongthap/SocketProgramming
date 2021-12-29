@@ -58,15 +58,15 @@ string inputIP()
 {
 	string ip;
 
-	while(true)
+	while (true)
 	{
 		cout << "Please enter IP address: ";
 		getline(cin, ip);
 		if (validateIP(ip)) return ip;
-	} 
+	}
 }
 
-void signUp(string &name,string &pass)
+void signUp(string& name, string& pass)
 {
 	bool flag = 0;
 	while (flag == 0)
